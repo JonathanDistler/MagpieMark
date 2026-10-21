@@ -1,0 +1,5 @@
+# UAV Benchmark Environment
+The following folder represents the necessary components to create the UAV benchmark test - mostly in use for a single UAV. The *Benchmark_enviornment.zip* holds the representative CAD files for the benchmark environment, although it isn't necessary high fidelity - it showcases the general locations and heights of the subsystems. The more accurate base for use with the PVC is under *base_files* as it is generally more manufacturable and secure, with 3 holds used to define the only necessary constraints to fully constrain the PVC.  
+
+# Bill of Material
+The most accurate bill-of-materials is under *Bill_of_Materials.pdf*, with the total cost of the order of $200. The PVCs are all schedule 40, NPS 1.5". The lengths of each PVC range from roughly 1 m to 2.5 m, although the height of the PVCs can be changed without a loss of generalization to cut down on material costs. 
