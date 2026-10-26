@@ -1,12 +1,12 @@
 # Drone obstacle course
 
-A ROS 2 / PX4 / Gazebo benchmark for individual drones and drone swarms,
+The relevant files are in **MagpieMark_shareable.zip**, which represents a ROS 2 / PX4 / Gazebo benchmark for individual drones and drone swarms,
 with static obstacle routes, swarm behaviors, and Python interfaces for RL.
 The research goal is to compare a physical test bed with its simulation.
 
 ## Start here
 
-Open this folder in VS Code and use **Terminal → New Terminal**. Commands assume
+Unzip the **MagpieMark_shareable.zip**, or rely on a previous version (**prev_files**) without as much overhead involving the dashboard. Open this folder in VS Code and use **Terminal → New Terminal**. Commands assume
 Ubuntu 24.04, ROS 2 Jazzy, Gazebo Harmonic, a built PX4 checkout, and a DDS agent.
 A ZIP contains the project files; it does not install those dependencies.
 For a new machine, complete [installation and sharing](docs/run_and_share.md)
