@@ -1,5 +1,5 @@
 # Drone_Benchmark
-MagpieMark: A Novel Sim-to-Real Benchmarking System for Single and Mutli-UAV Test-Beds. All preliminary test results and videos are provided at the following Dropbox [link](https://www.dropbox.com/scl/fo/mpk8m9i1wic2rj8xxhlca/AM0rIIFMqM8nxzCF4yYsI8w?rlkey=tw8a77m6pr5sz1tewfo8tecg3&st=jfouqmjc&dl=0)
+MagpieMark: A Novel Sim-to-Real Benchmarking System for Single and Mutli-UAV Test-Beds. All preliminary test results and videos are provided at the following Dropbox [link](https://www.dropbox.com/scl/fo/mpk8m9i1wic2rj8xxhlca/AM0rIIFMqM8nxzCF4yYsI8w?rlkey=tw8a77m6pr5sz1tewfo8tecg3&st=jfouqmjc&dl=0). The relevant files are located in *Magpie_Mark.zip*, with the necessary dependencies being ROS 2, Gazebo, PX4 checkout and compiled firmware, and a Micro XRCE-DDS Agent; the full set up dependencies can be found within the zip file at *docs/run_and_share.md*. 
 
 # The Goal of This Project
 
@@ -25,7 +25,7 @@ The basic research question is as follows:
 
 # Methodology
 
-The general methodology is to create a representation of the UAV test-bed in Gazebo, then transfer the exact setup into a physical environmnet. Then, using basic circuitry and computer vision, the physical tests will be overlapped with the simulation tests to guide UAV development. 
+The general methodology is to create a representation of the UAV test-bed in Gazebo, then transfer the exact setup into a physical environmnet. Then, the physical tests will be overlapped with the simulation tests to guide UAV development. 
 
 # Setup Single UAV 
 
@@ -33,6 +33,7 @@ First, source the environment in the miniconda virtual environment in terminal 1
 
 ```bash
 cd ~/drone_obstacle_course
+
 source ~/miniconda3/etc/profile.d/conda.sh
 
 conda activate drone-ros-jazzy
@@ -69,11 +70,12 @@ land
 quit
 ```
 
-Or, for velocity controlled movement, with the first float representing the distance and the second float representing the speed in m/s: 
+Or, for velocity controlled movement, with the first float representing the distance and the second float representing the speed in m/s, or just a linear translation:
 
 ```bash
 forward 0.5 velocity 0.4
 right 0.5 velocity 0.4
+velocity 0.2 0 0 # N E D - purely velocity control
 ```
 
 # Setup Single UAV Test 
@@ -202,7 +204,9 @@ conda activate drone-ros-jazzy
 
 source install-conda/local_setup.bash
 
-/usr/bin/python3 scripts/start_simulation.py --world swarm --n 3
+N=3
+
+/usr/bin/python3 scripts/start_simulation.py --ros system --n "$N" --world swarm
 ```
 
 In terminal 2: 
@@ -213,12 +217,28 @@ source /opt/ros/jazzy/setup.bash
 
 source install-system/local_setup.bash
 
-ros2 run swarm_mavsdk_ros2 swarm_tests --n 3 --seed 42
+N=3
+
+ros2 run swarm_mavsdk_ros2 swarm_command startup --n "$N"
+
+ros2 run swarm_mavsdk_ros2 swarm_command arm --n "$N"
+
+ros2 run swarm_mavsdk_ros2 swarm_command takeoff --n "$N"
+
+ros2 run swarm_mavsdk_ros2 swarm_tests --n "$N" --test all --seed 42
 ```
 
-Finally, enter the commands in the terminal from the list below. One can string together multiple tests at once (e.g. test 1, test 2, . . . ), with the UAV reorienting itself along the "start line" of each new test. Test 1 represents a change in orientation (from along the x to along the y); test 2 represents a change from a random setup to a linear setup; test 3 represents a partition in UAVs given a signal such that the majority 
+This runs the entire benchmark sequence, including tests 1, 2, and 3. Instead, to run only a single test at a time:
 
-dynamic flag passage, in which the flag "orients" itself either left or right and the UAV has to react to it in order to simulate dynamic on-board compute; test 3 represents a passage through a confined space. Results are saved in "results/tests/all_tests.csv".
+In terminal 2: 
+```bash
+ros2 run swarm_mavsdk_ros2 swarm_command test 1 --n "$N"
+
+ros2 run swarm_mavsdk_ros2 swarm_command test 2 --n "$N" --seed 42
+
+ros2 run swarm_mavsdk_ros2 swarm_command test 3 --n "$N" --direction left
+```
+Test 1 represents a line formation followed by a 3 m translation. Test 2 represents a random starting position of each UAV in the swarm, followed by reorganization into a linle. Test 3 represents a majority partition followed by a group translation; this test requires at a minimum 3 drones in the swarm to necessitate a full majority. 
 
 ```bash
 startup
@@ -276,6 +296,11 @@ swarm down 1
 swarm stop
 ```
 
+# Relation to Physical Hardware
+The software abstracts away the complexity of the ROS 2 and PX4 flight controller. There is a tracking input that supplies each drone's position and orientation - which will be supplied by the Vicon tracker in the real test-setup. This current project accepts either **PosteStamped** or **TransformStamped**, but does not explicitly connect to the Vicon SDK. There is an external-odometry bridge that converts tracker coordinates into PX4's navigation conventions, and applies a calibration for the marker offsets, checking timestamps and rejecting invalid measurements. The bridge sends **VehicleOdometry** to each UAV through Micro XRCE-DDS, then PX4's native EKF2 combines these external poses with onboard sensors to estimate the vehicle's state. As for the flight commands, the **DroneNode** for each drone recieves a PX4 state feedback and streams position and velocity setpoints plus an offboard heartbeat at roughly 20 Hz. The arming mode-changing, and landing all use the **VehicleCommand** topic, with PX4 handling the flight stabilization and motor control. For a UAV swarm, a shared configuration maps drone IDs to tracker topics, PX4 namespaces, and the vehicle identities, with routing measurements and commands being send to the correct UAV. For a full breakdown, see the hardware integration guide at *docs/hardware_integration.md* in the shared *Magpie_Mark.zip*. 
+
+
+
 # Miscellaneous
 
 As an aside, sometimes there are artificats of other simulation which cause the UAV swarm to not instantiate in a Gazebo world, simply enter the following commands into terminal:
@@ -284,3 +309,4 @@ As an aside, sometimes there are artificats of other simulation which cause the 
 pkill -f px4
 pkill -f "gz sim"
 ```
+Additionally, sometimes all n UAVs may not takeoff, in that case, restart the simulation environment. This can often be avoided by waiting a few seconds after arming the UAV/UAVs before providing the "takeoff" command. 
