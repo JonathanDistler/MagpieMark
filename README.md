@@ -1,4 +1,4 @@
-# Drone_Benchmark
+# MagpieMark
 MagpieMark: A Novel Sim-to-Real Benchmarking System for Single and Mutli-UAV Test-Beds. All preliminary test results and videos are provided at the following Dropbox [link](https://www.dropbox.com/scl/fo/mpk8m9i1wic2rj8xxhlca/AM0rIIFMqM8nxzCF4yYsI8w?rlkey=tw8a77m6pr5sz1tewfo8tecg3&st=jfouqmjc&dl=0). The relevant files are located in *Magpie_Mark.zip*, with the necessary dependencies being ROS 2, Gazebo, PX4 checkout and compiled firmware, and a Micro XRCE-DDS Agent; the full set up dependencies can be found within the zip file at *docs/run_and_share.md*. 
 
 # The Goal of This Project
