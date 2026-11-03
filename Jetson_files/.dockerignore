@@ -1,0 +1,17 @@
+**
+!deploy/
+!deploy/jetson/
+!deploy/jetson/**
+!ros2/
+!ros2/swarm_mavsdk_ros2/
+!ros2/swarm_mavsdk_ros2/**
+!px4_msgs/
+!px4_msgs/**
+!config/
+!config/bench.example.json
+!scripts/
+!scripts/check_external_odometry.py
+**/.git
+**/__pycache__
+**/*.pyc
+**/*.egg-info

@@ -1,0 +1,42 @@
+{
+  "vehicles": [
+    {
+      "drone_id": 0,
+      "bench_label": "bench_drone_1",
+      "px4_namespace": "/uav_0",
+      "system_id": 1,
+      "dds_key": 101,
+      "mocap_body": "",
+      "tracking_topic": "/tracking/drone_0/pose",
+      "tracking_frame": "lab",
+      "odometry": {
+        "pose_frame": 2,
+        "world_rotation": [0, 0.7071067811865476, 0.7071067811865476, 0],
+        "world_translation": [0, 0, 0],
+        "body_rotation": [0, 1, 0, 0],
+        "marker_offset_body": [0, 0, 0],
+        "position_variance": [0.0025, 0.0025, 0.0025],
+        "orientation_variance": [0.0025, 0.0025, 0.0025]
+      }
+    },
+    {
+      "drone_id": 1,
+      "bench_label": "bench_drone_2",
+      "px4_namespace": "/uav_1",
+      "system_id": 2,
+      "dds_key": 102,
+      "mocap_body": "",
+      "tracking_topic": "/tracking/drone_1/pose",
+      "tracking_frame": "lab",
+      "odometry": {
+        "pose_frame": 2,
+        "world_rotation": [0, 0.7071067811865476, 0.7071067811865476, 0],
+        "world_translation": [0, 0, 0],
+        "body_rotation": [0, 1, 0, 0],
+        "marker_offset_body": [0, 0, 0],
+        "position_variance": [0.0025, 0.0025, 0.0025],
+        "orientation_variance": [0.0025, 0.0025, 0.0025]
+      }
+    }
+  ]
+}

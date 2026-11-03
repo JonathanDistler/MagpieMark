@@ -1,0 +1,46 @@
+x-runtime: &runtime
+  image: drone-obstacle-course:jetson
+  build:
+    context: .
+    dockerfile: deploy/jetson/Dockerfile
+    args:
+      BUILD_JOBS: ${BUILD_JOBS:-2}
+  network_mode: host
+  init: true
+  environment:
+    ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-0}
+    ROS_LOCALHOST_ONLY: "0"
+    FASTDDS_BUILTIN_TRANSPORTS: UDPv4
+  volumes:
+    - ./config:/opt/drone/config:ro
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  agent:
+    <<: *runtime
+    command: [MicroXRCEAgent, udp4, -p, "8888"]
+  odometry:
+    <<: *runtime
+    profiles: [hardware]
+    command:
+      - ros2
+      - launch
+      - swarm_mavsdk_ros2
+      - odometry.launch.py
+      - num_drones:=${NUM_DRONES:-2}
+      - vehicle_config:=/opt/drone/config/jetson.local.json
+  controller:
+    <<: *runtime
+    profiles: [hardware]
+    command:
+      - ros2
+      - launch
+      - swarm_mavsdk_ros2
+      - swarm.launch.py
+      - num_drones:=${NUM_DRONES:-2}
+      - vehicle_config:=/opt/drone/config/jetson.local.json
+      - record:=false
