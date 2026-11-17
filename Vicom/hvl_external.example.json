@@ -1,0 +1,118 @@
+{
+  "vehicles": [
+    {
+      "drone_id": 0,
+      "bench_label": "magpie_01",
+      "px4_namespace": "",
+      "system_id": 1,
+      "dds_key": 1,
+      "mocap_body": "magpie_01/body",
+      "tracking_topic": "/tracking/drone_0/pose",
+      "tracking_message": "PoseStamped",
+      "tracking_frame": "hvl_world_frd",
+      "odometry": {
+        "pose_frame": 2,
+        "world_rotation": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "world_translation": [
+          0,
+          0,
+          0
+        ],
+        "body_rotation": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "marker_offset_body": [
+          0,
+          0,
+          0
+        ],
+        "max_age_s": 0.2,
+        "future_tolerance_s": 0.02
+      }
+    },
+    {
+      "drone_id": 1,
+      "bench_label": "magpie_02",
+      "px4_namespace": "/px4_1",
+      "system_id": 2,
+      "dds_key": 2,
+      "mocap_body": "magpie_02/body",
+      "tracking_topic": "/tracking/drone_1/pose",
+      "tracking_message": "PoseStamped",
+      "tracking_frame": "hvl_world_frd",
+      "odometry": {
+        "pose_frame": 2,
+        "world_rotation": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "world_translation": [
+          0,
+          0,
+          0
+        ],
+        "body_rotation": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "marker_offset_body": [
+          0,
+          0,
+          0
+        ],
+        "max_age_s": 0.2,
+        "future_tolerance_s": 0.02
+      }
+    },
+    {
+      "drone_id": 2,
+      "bench_label": "magpie_03",
+      "px4_namespace": "/px4_2",
+      "system_id": 3,
+      "dds_key": 3,
+      "mocap_body": "magpie_03/body",
+      "tracking_topic": "/tracking/drone_2/pose",
+      "tracking_message": "PoseStamped",
+      "tracking_frame": "hvl_world_frd",
+      "odometry": {
+        "pose_frame": 2,
+        "world_rotation": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "world_translation": [
+          0,
+          0,
+          0
+        ],
+        "body_rotation": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "marker_offset_body": [
+          0,
+          0,
+          0
+        ],
+        "max_age_s": 0.2,
+        "future_tolerance_s": 0.02
+      }
+    }
+  ]
+}
