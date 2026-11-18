@@ -27,6 +27,16 @@ The basic research question is as follows:
 
 The general methodology is to create a representation of the UAV test-bed in Gazebo, then transfer the exact setup into a physical environmnet. Then, the physical tests will be overlapped with the simulation tests to guide UAV development. 
 
+```bash
+mkdir -p ~/drone_obstacle_course
+unzip /MagpieMark_Benchmark/Magpie_Mark.zip -d ~/drone_obstacle_course
+cd ~/drone_obstacle_course
+
+# After installing the native prerequisites in README_SIMULATION.md:
+bash scripts/setup_sim.sh
+bash scripts/validate_release.sh
+```
+
 # Setup Single UAV 
 
 First, source the environment in the miniconda virtual environment in terminal 1: 

@@ -1,0 +1,226 @@
+MAGPIE MARK SIMULATION RELEASE QUALIFICATION
+
+Disposition: CANDIDATE ONLY. The previous Magpie_Mark.zip stays in place.
+Critical failure: the original central position benchmark run with bulk recording stopped during line formation
+setup after drone 2 telemetry became stale. The fleet landed, but no benchmark
+CSV was produced in that run. The six-case central rerun with the recorder off
+and 1.5 m spawn spacing passed. That configuration does not retest the failed case.
+
+Candidate archive: Magpie_Mark.zip
+Archive size: 2,683,386 bytes
+Files: 404
+SHA-256: 212514e4c212987eb8fec925569c2f999c2792cf1a6cb5e1da539bc8b672c8f0
+Previous archive backup: /mnt/c/Users/jonat/Downloads/Magpie_Mark.backup-20261117-212040.zip
+Previous archive/backup SHA-256: 5d2f7fa7edbfe243d69bc9db168de3f23847964b62794edc832f2469f8916a8d
+
+ARCHIVE AND BUILD
+PASS: ZIP integrity, extraction, exact manifest membership and all per-file digests.
+PASS: Flat portable source paths, no submodule pointers, environments, caches, or flight output.
+PASS: 345 shared runtime files match the extracted build/test tree byte for byte.
+PASS: clean colcon build of px4_msgs, swarm_mavsdk_ros2 and drone_swarm_controller.
+PASS: 293 initial tests and 294 tests after the edge fix, plus shell syntax and launcher help.
+The initial edge benchmark failed before dispatch because its Path output
+directory could not be serialized. The candidate normalizes that parameter
+at the edge transport boundary. Other flight logic is unchanged.
+PASS: selected PX4 interface contract (7 message definitions and 7 DDS topic declarations).
+PASS: previous release content preserved except two upstream GitHub workflow files.
+PASS: all three HVL mapping entries and companion sources preserved.
+The empty swarm_mavlink_ros2 package was excluded after checking ROS manifests,
+launches, setup metadata, imports and startup scripts. The local folder was not changed.
+
+ENVIRONMENT
+Observed simulation host
+Python 3.12.3
+Linux kernel: 6.18.58.1-microsoft-standard-WSL2
+Gazebo Sim: 8.11.0
+PX4 source: d6f12ad1c4f70ad3230afd7d86e971421e02fef4
+PX4 source tag: v1.17.0
+Micro XRCE-DDS source: 73622810d984349b80bbac0ef55fc0b694d62222
+Micro XRCE-DDS source tag: v2.4.3
+px4_msgs: 2.0.1
+Message inventory entries: 236
+Project venv optional MAVSDK: 3.17.2 (legacy scripts only)
+System-ROS project additions: MAVProxy 1.8.74, pymavlink 2.4.49, future 1.0.0, pytest 8.4.2
+Historical Conda snapshot optional MAVSDK: 3.15.3
+See environment-locks/simulation-ubuntu-noble-packages.tsv for apt versions.
+Ubuntu 24.04.3 LTS / WSL2, system ROS Jazzy, ros-base 0.11.0, rclpy 7.1.5.
+Clean-extraction regression runs used installed system pytest 7.4.4.
+The recipient venv requirements pin pytest 8.4.2.
+Used a clean extraction and rebuilt the ROS overlay. Native PX4/Gazebo/agent
+and MAVProxy were already installed. A separate clean Ubuntu installation
+and dependency installation from the network are NOT VERIFIED.
+
+FINAL EXTRACTED BUILD AND TEST RESULT
+Finished <<< px4_msgs [6min 35s]
+Finished <<< swarm_mavsdk_ros2 [2.12s]
+Finished <<< drone_swarm_controller [2.14s]
+Summary: 3 packages finished [6min 38s]
+294 passed in 10.31s
+MATCH VehicleOdometry: fields, dimensions, constants, and ordering
+MATCH VehicleLocalPosition: fields, dimensions, constants, and ordering
+MATCH VehicleCommand: fields, dimensions, constants, and ordering
+MATCH OffboardControlMode: fields, dimensions, constants, and ordering
+MATCH TrajectorySetpoint: fields, dimensions, constants, and ordering
+MATCH VehicleStatus: fields, dimensions, constants, and ordering
+MATCH EstimatorStatusFlags: fields, dimensions, constants, and ordering
+MATCH DDS topic declarations (runtime version suffixes must also be checked)
+
+LIVE PX4/GZ/ROS 2 CHECKS
+All rows below are simulator runs, separate from the automated regression suite.
+Headless Gazebo ran with LP_NUM_THREADS=2 and ROS_DOMAIN_ID=95.
+Single route position tests used individual drone_command invocations.
+The edge follow-up used 1.5 m spawn spacing and executed test 1 with a Path.
+Yaw and yaw_by were dispatch checks. Terminal heading accuracy was not measured.
+The position-mode obstacle land check verifies that PX4 accepted the command.
+The circle was previously flown with the Gazebo GUI on the original workspace.
+A GUI run in the extracted release is NOT VERIFIED.
+single          estimators-heartbeats-interfaces    PASS
+single          DDS-identity-parameters             PASS
+single          six-position-moves-safety           PASS
+single          position-velocity                   PASS
+central         estimators-heartbeats-interfaces    PASS
+central         DDS-identity-parameters             PASS
+central         controls-and-benchmarks             FAIL (1)
+external        estimators-heartbeats-interfaces    PASS
+external        DDS-identity-parameters             PASS
+external        fusion-audit                        PASS
+circle          both-crossings                      PASS
+circle          landing-and-final-mp4               PASS
+obstacles       estimators-heartbeats-interfaces    PASS
+obstacles       DDS-identity-parameters             PASS
+obstacles       route-1                             PASS
+obstacles       route-2                             PASS
+obstacles       route-3                             PASS
+obstacles       land                                PASS
+edge            estimators-heartbeats-interfaces    PASS
+edge            DDS-identity-parameters             PASS
+edge            controls-and-benchmarks             FAIL (1)
+central-retry   reject-arm-before-startup           PASS
+central-retry   startup                             PASS
+central-retry   reject-takeoff-before-arm           PASS
+central-retry   arm                                 PASS
+central-retry   takeoff                             PASS
+central-retry   benchmark-position-1                PASS
+central-retry   benchmark-position-2                PASS
+central-retry   benchmark-position-3                PASS
+central-retry   benchmark-velocity-1                PASS
+central-retry   benchmark-velocity-2                PASS
+central-retry   benchmark-velocity-3                PASS
+central-retry   formation-line                      PASS
+central-retry   formation-grid                      PASS
+central-retry   formation-circle                    PASS
+central-retry   randomize                           PASS
+central-retry   split                               PASS
+central-retry   translate                           PASS
+central-retry   yaw                                 PASS
+central-retry   yaw-by                              PASS
+central-retry   stop                                PASS
+central-retry   land                                PASS
+central-retry   disarm                              PASS
+edge-retry      estimators-heartbeats-interfaces    PASS
+edge-retry      path-output-dir-benchmark           PASS
+edge-retry      Path serialization regression absent PASS
+edge-retry      all landed and disarmed             PASS
+custom-hvl      two-vehicle fusion and routing      PASS
+obstacles-automatic velocity-route-1                    PASS
+obstacles-automatic velocity-route-2                    PASS
+obstacles-automatic velocity-route-3                    PASS
+obstacles-automatic touchdown-and-disarm                PASS
+obstacles-automatic final-mp4-file                      PASS
+
+ROS-only mock tracker (no PX4 flight):
+PASS 0: 574 changing samples, capture times advance, dropout observed
+PASS 1: 570 changing samples, capture times advance, dropout observed
+PASS 2: 570 changing samples, capture times advance, dropout observed
+
+Read-only MAVSDK 3.17.2 against the three running central SITL endpoints:
+2 MAVSDK connected, NED north 4.037139892578125
+1 MAVSDK connected, NED north 2.030654191970825
+0 MAVSDK connected, NED north -1.8013591766357422
+SITL external fusion (external):
+PASS drone 0 /: fresh pose-only input, EV position/height/yaw fusion, valid local state; samples=243
+PASS drone 1 /px4_1: fresh pose-only input, EV position/height/yaw fusion, valid local state; samples=242
+PASS drone 2 /px4_2: fresh pose-only input, EV position/height/yaw fusion, valid local state; samples=242
+Controls and benchmark detail (central):
+PASS single_position samples 246 peak speed 0.1910386613022793
+PASS single_velocity samples 169 peak speed 0.388810109816364
+PASS fleet directional central position
+PASS fleet directional central velocity
+PASS: all drones landed
+TimeoutError: Swarm telemetry became stale for drone 2.
+Controls and benchmark detail (edge):
+PASS single_position samples 148 peak speed 0.191109531596786
+PASS single_velocity samples 170 peak speed 0.3872487512542157
+PASS fleet directional edge:drone_0 position
+PASS fleet directional edge:drone_0 velocity
+PASS: all drones landed
+
+PASS: extracted Tk dashboard window mapped during live single-drone SITL. Displayed numerical values were not independently compared.
+
+Custom two-vehicle HVL validation output:
+Starting external: /tmp/magpie-release-audit/workspace/results/hvl_smoke/external/launcher.log
+PASS drone 0 /uav_0: fresh pose-only input, EV position/height/yaw fusion, valid local state; samples=279
+PASS drone 1 /uav_1: fresh pose-only input, EV position/height/yaw fusion, valid local state; samples=279
+PASS external: two valid estimators and controller interfaces; no arming or takeoff
+
+Updated live edge benchmark:
+Dispatching edge benchmark with a Path output directory
+/tmp/magpie-release-audit/live/edge-retry/metrics/20261118_031945_038824.csv
+
+Circle video: exact one complete pass followed by q and three PX4 landing/disarm events. First and last frames decoded; 11204 frames in 448.12 seconds.
+Automatic obstacle video: all three velocity routes in one file at 0.4 m/s. First and last frames decoded; 27062 frames in 1082.44 seconds.
+
+MEASURED OUTPUTS
+final-source/results/tests/20261118_032926_778626.csv: 5,510 data lines, 3,510,460 bytes
+final-source/results/tests/20261118_033558_450358.csv: 5,093 data lines, 3,235,278 bytes
+final-source/results/tests/20261118_034250_180656.csv: 2,484 data lines, 1,518,240 bytes
+live/central/metrics/20261118_022140_375373/single_position.csv: 246 data lines, 146,815 bytes
+live/central/metrics/20261118_022140_375373/single_velocity.csv: 169 data lines, 101,064 bytes
+live/central-retry/metrics/summary.csv: 6 data lines, 1,190 bytes
+  {"test": "1", "status": "completed", "duration_s": "52.87737202300195", "target_rmse_m": "0.03793607980438969", "error": ""}
+  {"test": "2", "status": "completed", "duration_s": "29.629339898998296", "target_rmse_m": "0.014857921881607792", "error": ""}
+  {"test": "3", "status": "completed", "duration_s": "15.60916588100008", "target_rmse_m": "0.0243475825408145", "error": ""}
+  {"test": "1", "status": "completed", "duration_s": "25.92983063599968", "target_rmse_m": "0.09061013774794957", "error": ""}
+  {"test": "2", "status": "completed", "duration_s": "15.620267537000473", "target_rmse_m": "0.06550746459895211", "error": ""}
+  {"test": "3", "status": "completed", "duration_s": "10.175399460000335", "target_rmse_m": "0.07626005764380236", "error": ""}
+live/edge/metrics/20261118_024130_539863/single_position.csv: 148 data lines, 88,975 bytes
+live/edge/metrics/20261118_024130_539863/single_velocity.csv: 170 data lines, 101,675 bytes
+live/edge-retry/metrics/summary.csv: 1 data lines, 344 bytes
+  {"test": "1", "status": "completed", "duration_s": "39.53704706899953", "target_rmse_m": "0.02923494875444722", "error": ""}
+live/single/metrics/20261118_021953_571421/single_position.csv: 97 data lines, 58,386 bytes
+live/single/metrics/20261118_021953_571421/single_velocity.csv: 71 data lines, 42,684 bytes
+workspace/results/ros2/20261117_212135_ob2na_d5/positions.csv: 10,718 data lines, 1,455,199 bytes
+workspace/results/ros2/20261117_212135_ob2na_d5/topics.csv: 34,932 data lines, 24,961,609 bytes
+workspace/results/tests/20261118_023513_063625.csv: 1,876 data lines, 1,199,642 bytes
+workspace/results/tests/20261118_023720_383716.csv: 1,749 data lines, 1,114,985 bytes
+workspace/results/tests/20261118_023934_195524.csv: 1,495 data lines, 916,735 bytes
+
+REPRODUCTION COMMANDS
+From a clean extraction follow README_SIMULATION.md to install the native tools.
+bash scripts/setup_sim.sh
+bash scripts/validate_release.sh
+bash scripts/run_sim.sh --n 1 --world blank
+bash scripts/run_sim.sh --n 3 --world swarm
+bash scripts/run_sim.sh --n 3 --circle-test
+bash scripts/run_sim.sh --n 3 --world blank --odometry-source external
+bash scripts/run_sim.sh --n 1 --world obstacles --tests 1 2 3
+bash scripts/run_sim.sh --n 3 --world swarm --architecture edge:drone_0
+Measured central benchmark profile: --headless --n 3 --world swarm --spacing 1.5
+Example benchmark after arming/takeoff:
+ros2 run swarm_mavsdk_ros2 swarm_command test 1 --n 3 --mode position --speed .4 --seed 42
+In a second terminal source /opt/ros/jazzy/setup.bash and install-system/local_setup.bash.
+Use the command matrix and expected outputs in README_SIMULATION.md.
+
+LIMITS AND UNVERIFIED VARIANTS
+Hardware Vicon acquisition, real-aircraft calibration, powered flight and failsafe
+behavior: NOT VERIFIED. The Vicon acquisition driver/adapter is externally owned.
+Legacy direct MAVSDK flight scripts, legacy ROS controller flight commands,
+independent legacy launchers, alternate Conda and Jetson runtime, and live
+policy/RL flight: NOT VERIFIED. Regression tests cover some of their interfaces.
+Position-mode obstacle routes 1, 2, and 3 each passed as separate ROS commands.
+Other flag-side/seed and speed, spacing and recording permutations are NOT VERIFIED.
+Unsupported capabilities: autonomous leader pursuit, obstacle perception, arbitrary
+world planning and physical collision guarantees. Fleet edge dispatch and simulated
+left/right flag selection do not add these capabilities.
+The archive carries only source, reference assets and version records. Raw logs,
+recordings, metrics CSVs and generated builds remain outside the ZIP.
